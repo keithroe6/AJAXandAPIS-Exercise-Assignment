@@ -11,7 +11,7 @@ first.append(p2);
 const oneAJSON = `{"id":18,"type":"programming","setup":"Why did the programmer quit his job?","punchline":"Because he didn't get arrays."}`;
 
 // 1a.
-jokeJS1= JSON.parse(oneAJSON);
+const jokeJS1= JSON.parse(oneAJSON);
 
 // 1b. 
 p1.innerText = jokeJS1.setup;
@@ -32,15 +32,15 @@ const activity = axios.get(`https://www.boredapi.com/api/activity/`)
 // 2b. 
 .then((resolved) => {
     const activityJS2 = resolved.data;
-    console.log(activityJS2);
 // 2c.
     p3.innerText = activityJS2.type;
     p4.innerText = activityJS2.activity;
+    console.log(`Question 2 was successful`);
 })
 // 2d.
-.catch(rejected => {
-        console.log(`Rejected, No data found`);
-     console.log(rejected);
+.catch((err) => {
+     console.log(`Question 2 failed to GET`);
+     console.log(err);
      });
     
 
@@ -53,65 +53,61 @@ const p6 = document.createElement('p');
 third.append(p5);
 third.append(p6);
 
-const activity2 = axios.get(`https://www.boredapi.com/api/activity/`);
 
-async function activityFunc(secondact){
+async function activityFunc(){
     try {
-    const activityJS3 = await secondact;
-    console.log(activityJS3);
-    p5.innerText = activityJS3.data.activity;
-    p6.innerText = activityJS3.data.type;
-    } catch (rejected) {
-        console.log('Rejected', error);
+    const activity2 = await axios.get(`https://www.boredapi.com/api/activity/`);
+    // 3c.
+    p5.innerText = activity2.data.activity;
+    p6.innerText = activity2.data.type;
+    } catch (err) {
+        console.log('Rejected', err);
     }
 
 }
 
-activityFunc(activity2);
+activityFunc();
 
 
 // 4
-// const fourth = document.querySelector('#fourth');
-// const p7 = document.createElement('p');
-// fourth.append(p7);
-
-// const tvshows = axios.get(`https://www.tvmaze.com/api/`);
-
-// async function tvMazeFunc(tvdata) {
-//     try{
-//         const tvshow = await tvdata;
-//         console.log(tvshow);
-//         // p7.innerText = 
-//     } catch (rejected) {
-//         console.log('Rejected', error);
-//     }
-
-// }
-
-// 5.
-const fifth = document.querySelector('#fifth');
-const p8 = document.createElement('p');
-fifth.append(p8);
-
-const pokemonPromise = axios.get(`https://pokeapi.co/api/v2/pokemon/pikachu`);
+ const fourth = document.querySelector('#fourth');
+ const p7 = document.createElement('p');
+ fourth.append(p7);
 
 
-
-async function getPokemonData() {
-    try {
-    const response = await pokemonPromise;
-    const pokemonData = response.data
-    console.log(pokemonData);
-    console.log(pokemonData.name);
-    const pikapic = document.createElement('img');
-    image.src = pokemonData.sprites.front_female;
-    fifth.append(pikapic);
-    } catch (error) {
-        console.log('Error', error);
+ async function tvMazeFunc() {
+   try {
+        const finalEp = await axios.get(`https://api.tvmaze.com/singlesearch/shows?q=Mandalorian&embed=episodes`)
+        
+        p7.innerText = finalEp.data._embedded.episodes[7].name
+        console.log('Question 4 was successful');
+    } catch (err){
+        console.log('Rejected', err);
     }
+ }
+
+ tvMazeFunc()
+
+// 5. Bonus
+const img = document.createElement('img');
+const body = document.querySelector(`body`)
+
+
+
+async function pika() {
+    try {
+    const pikaPic = await axios.get(`https://pokeapi.co/api/v2/pokemon/pikachu`);
+    img.src = pikaPic.data.sprites.front_female
+    body.append(img)
+    console.log(`Bonus question was successful`);
+
+} catch (err){
+    console.log(`Bonus question faile to GET`);
+    console.log(err);
+}
 }
 
-getPokemonData();
+pika();
 
 
 
